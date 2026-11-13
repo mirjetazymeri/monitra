@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     template: "%s · Monitra",
   },
   description: "Monitor your infrastructure. Stay in control.",
+  applicationName: "Monitra",
+  // An authenticated monitoring dashboard should never appear in search results.
+  robots: { index: false, follow: false },
 };
 
 export const viewport: Viewport = {

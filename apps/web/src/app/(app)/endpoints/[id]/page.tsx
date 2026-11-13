@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, CheckCircle2, ExternalLink, Gauge, History, Loader2, Pause, Pencil, Play, ShieldCheck, Timer, Trash2, Zap } from "lucide-react";
@@ -43,6 +43,12 @@ export default function EndpointDetailPage({ params }: { params: Promise<{ id: s
   const checks = useChecks({ endpoint_id: id, range: "all", page: checksPage, per_page: 10 }, id !== null);
   const incidents = useIncidents({ endpoint_id: id, per_page: 5 }, id !== null);
   const { busy, runCheck, toggle, remove } = useEndpointActions();
+
+  // Show the endpoint's name in the browser tab once it is known (metadata can't fetch authenticated data).
+  const endpointName = endpoint.data?.name;
+  useEffect(() => {
+    if (endpointName) document.title = `${endpointName} · Monitra`;
+  }, [endpointName]);
 
   if (id === null || endpoint.error) {
     const notFound = id === null || (endpoint.error instanceof ApiError && endpoint.error.status === 404);
