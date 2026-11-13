@@ -279,6 +279,7 @@ Full request and response details: [`docs/api.md`](docs/api.md).
 - **Authentication:** Sanctum SPA session cookies (HttpOnly, encrypted, `SameSite=Lax`), CSRF tokens on every mutation, session regeneration on login and invalidation on logout, and login rate limiting (5/min per email+IP).
 - **Authorisation:** every endpoint, check and incident query is scoped to the owner. Foreign IDs return `404` to prevent enumeration, and history filters validate endpoint ownership.
 - **CORS:** only `FRONTEND_URL` origins, with credentials. Preflight responses are cached for 2 hours.
+- **Security headers:** the API sends `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, a deny-all CSP for its JSON responses, and HSTS over HTTPS. The dashboard sends `nosniff`, frame denial, a strict referrer policy, a restrictive `Permissions-Policy`, and a CSP limiting framing, plugins, `base-uri` and form targets. The dashboard is marked `noindex`.
 - **Abuse limits:** at most `MONITRA_MAX_ENDPOINTS_PER_USER` live endpoints per account (default 50), and manual checks are limited to 10 per minute.
 - **Safe errors:** raw exception messages, which can leak internal addresses, are never stored or returned. Checks store a sanitised category.
 - **No public sign-up:** accounts are provisioned with `php artisan monitra:create-user`. The demo seeder refuses to run outside `local`/`testing`.
