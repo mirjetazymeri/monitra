@@ -12,10 +12,16 @@ import { RowsSkeleton } from "@/components/common/section-skeleton";
 import { Pagination } from "@/components/common/pagination";
 import { IncidentsTable } from "@/components/incidents/incidents-table";
 
-function IncidentsView() {
+/** Re-mounts the view when `?endpoint=` changes, so client-side navigation applies the new filter. */
+function IncidentsRoute() {
   const searchParams = useSearchParams();
-  const initialEndpoint = Number(searchParams.get("endpoint")) || null;
+  const param = searchParams.get("endpoint") ?? "";
+  const initialEndpoint = /^[1-9]\d*$/.test(param) ? Number(param) : null;
 
+  return <IncidentsView key={param} initialEndpoint={initialEndpoint} />;
+}
+
+function IncidentsView({ initialEndpoint }: { initialEndpoint: number | null }) {
   const [state, setState] = useState("");
   const [endpointId, setEndpointId] = useState<number | null>(initialEndpoint);
   const [page, setPage] = useState(1);
@@ -94,7 +100,7 @@ function IncidentsView() {
 export default function IncidentsPage() {
   return (
     <Suspense fallback={<RowsSkeleton rows={6} />}>
-      <IncidentsView />
+      <IncidentsRoute />
     </Suspense>
   );
 }
