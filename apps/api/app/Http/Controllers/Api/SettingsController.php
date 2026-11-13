@@ -14,16 +14,16 @@ class SettingsController extends Controller
     public function monitoring(): JsonResponse
     {
         return response()->json([
-            'connect_timeout_seconds' => config('monitra.connect_timeout'),
-            'request_timeout_seconds' => config('monitra.request_timeout'),
-            'max_response_bytes' => config('monitra.max_response_bytes'),
-            'allowed_ports' => config('monitra.allowed_ports'),
-            'allowed_intervals' => config('monitra.intervals'),
+            'connect_timeout_seconds' => config('monitraz.connect_timeout'),
+            'request_timeout_seconds' => config('monitraz.request_timeout'),
+            'max_response_bytes' => config('monitraz.max_response_bytes'),
+            'allowed_ports' => config('monitraz.allowed_ports'),
+            'allowed_intervals' => config('monitraz.intervals'),
             'follows_redirects' => false,
             'http_method' => 'GET',
-            'scheduler_batch_size' => config('monitra.scheduler_batch_size'),
-            'max_endpoints_per_user' => config('monitra.max_endpoints_per_user'),
-            'retention_days' => config('monitra.retention_days'),
+            'scheduler_batch_size' => config('monitraz.scheduler_batch_size'),
+            'max_endpoints_per_user' => config('monitraz.max_endpoints_per_user'),
+            'retention_days' => config('monitraz.retention_days'),
         ]);
     }
 

@@ -6,7 +6,7 @@ import { ChevronDown, LogOut, Menu, RefreshCw, Settings } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/providers/auth-provider";
-import { useRefreshAll } from "@/hooks/use-monitra";
+import { useRefreshAll } from "@/hooks/use-monitraz";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,7 +39,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isDetail = nav?.href === "/endpoints" && pathname !== "/endpoints";
-  const title = isDetail ? "Endpoint details" : (nav?.label ?? "Monitra");
+  const title = isDetail ? "Endpoint details" : (nav?.label ?? "MonitraZ");
   const description = isDetail ? "Availability and response times recorded for this endpoint." : nav?.description;
 
   async function handleRefresh() {

@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Validator;
  */
 class CreateUser extends Command
 {
-    protected $signature = 'monitra:create-user {--name=} {--email=}';
+    protected $signature = 'monitraz:create-user {--name=} {--email=}';
 
-    protected $description = 'Create a Monitra user account';
+    protected $description = 'Create a MonitraZ user account';
 
     public function handle(): int
     {

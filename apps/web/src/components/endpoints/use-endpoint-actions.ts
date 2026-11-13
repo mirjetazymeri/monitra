@@ -7,7 +7,7 @@ import { ApiError } from "@/lib/api/client";
 import { endpointsApi } from "@/lib/api/services";
 import type { Endpoint } from "@/lib/api/types";
 import { formatMs } from "@/lib/format";
-import { useRefreshAll } from "@/hooks/use-monitra";
+import { useRefreshAll } from "@/hooks/use-monitraz";
 
 function errorMessage(error: unknown, fallback: string): string {
   return error instanceof ApiError ? error.message : fallback;

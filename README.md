@@ -1,8 +1,8 @@
-# Monitra
+# MonitraZ
 
 **Monitor your infrastructure. Stay in control.**
 
-Monitra is an open-source infrastructure and API monitoring platform. Register HTTP/HTTPS services, and Monitra checks them on a schedule, records every status code and response time, opens incidents when a healthy service starts failing, and resolves them when it recovers. Everything shows up in a dark-first dashboard.
+MonitraZ is an open-source infrastructure and API monitoring platform. Register HTTP/HTTPS services, and MonitraZ checks them on a schedule, records every status code and response time, opens incidents when a healthy service starts failing, and resolves them when it recovers. Everything shows up in a dark-first dashboard.
 
 It is built as a monorepo: a **Laravel 13** REST API (`apps/api`) and a **Next.js 15** dashboard (`apps/web`).
 
@@ -29,7 +29,7 @@ It is built as a monorepo: a **Laravel 13** REST API (`apps/api`) and a **Next.j
 
 - **Real HTTP/HTTPS health checks** run by Laravel's HTTP client: status code, response time, success/failure and a sanitised error category for every check.
 - **SSRF-hardened checker.** Only public destinations are allowed, the connection is pinned to a validated IP, redirects are disabled, and response size, timeouts, ports and protocols are all limited.
-- **Scheduler** (`monitra:check-due`) with per-endpoint intervals (1 min to 1 h), batching, overlap protection and bounded (sequential) concurrency.
+- **Scheduler** (`monitraz:check-due`) with per-endpoint intervals (1 min to 1 h), batching, overlap protection and bounded (sequential) concurrency.
 - **Incident lifecycle:** an incident opens on healthy → unhealthy and resolves on recovery. The database guarantees at most one open incident per endpoint.
 - **Endpoint management:** create, edit, pause/resume, delete, and run a rate-limited manual check.
 - **Dashboard:** KPIs (total, online, offline, average response time, observed uptime), response-time and activity charts, status distribution, and recent incidents.
@@ -40,7 +40,7 @@ It is built as a monorepo: a **Laravel 13** REST API (`apps/api`) and a **Next.j
 - **Responsive UI:** a collapsible sidebar on desktop, a navigation sheet on mobile and tablet, and tables that become cards below 1280 px. Verified without horizontal overflow at 1440, 1280, 1024, 768, 390 and 375 px.
 - **Session handling:** an expired session redirects to sign-in and returns you to the page you were on (validated against open redirects); cached data is cleared on sign-in so nothing carries over between sessions.
 
-> Uptime figures are **observed, check-based availability**: successful checks divided by recorded checks. They are computed only from persisted results. When nothing was recorded, Monitra shows "—" rather than 100%.
+> Uptime figures are **observed, check-based availability**: successful checks divided by recorded checks. They are computed only from persisted results. When nothing was recorded, MonitraZ shows "—" rather than 100%.
 
 ## Technology stack
 
@@ -59,7 +59,7 @@ monitra/
 ├── apps/
 │   ├── api/                     Laravel REST API
 │   │   ├── app/
-│   │   │   ├── Console/Commands/    monitra:check-due, monitra:create-user
+│   │   │   ├── Console/Commands/    monitraz:check-due, monitraz:create-user
 │   │   │   ├── Enums/               EndpointStatus, IncidentState, CheckErrorCategory
 │   │   │   ├── Http/Controllers/Api Thin controllers
 │   │   │   ├── Http/Requests/       Form request validation
@@ -82,7 +82,7 @@ monitra/
 └── .github/workflows/ci.yml     Continuous integration
 ```
 
-Request flow for a check: `Scheduler → monitra:check-due → MonitoringService → HttpChecker → DestinationGuard (validate + resolve) → pinned cURL request → persist result + incident transition (one DB transaction)`.
+Request flow for a check: `Scheduler → monitraz:check-due → MonitoringService → HttpChecker → DestinationGuard (validate + resolve) → pinned cURL request → persist result + incident transition (one DB transaction)`.
 
 See [`docs/architecture.md`](docs/architecture.md) for design decisions and [`docs/api.md`](docs/api.md) for the full API reference.
 
@@ -90,7 +90,7 @@ See [`docs/architecture.md`](docs/architecture.md) for design decisions and [`do
 
 Prerequisites (verified with): PHP 8.3, Composer 2.9, Node.js 22, npm 10, MySQL 8 and Git. Laragon provides all of them. If `php` is not on your PATH, use Laragon's terminal (Cmder), or add `C:\laragon\bin\php\php-8.3.x\` to PATH.
 
-Clone this repository with Git, using the HTTPS or SSH URL from the green **Code** button on its GitHub page, or with GitHub Desktop (**Code → Open with GitHub Desktop**). Clone it into Laragon's web root, for example `C:\laragon\www\monitra`, then open a terminal in the project folder:
+Clone this repository with Git, using the HTTPS or SSH URL from the green **Code** button on its GitHub page, or with GitHub Desktop (**Code → Open with GitHub Desktop**). Clone it into Laragon's web root, for example `C:\laragon\www\monitraz`, then open a terminal in the project folder:
 
 ```bash
 cd monitra
@@ -98,10 +98,10 @@ cd monitra
 
 ### 1. Database
 
-Create an empty MySQL database named `monitra`, for example from HeidiSQL or phpMyAdmin in Laragon:
+Create an empty MySQL database named `monitraz`, for example from HeidiSQL or phpMyAdmin in Laragon:
 
 ```sql
-CREATE DATABASE monitra CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE monitraz CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 ### 2. Backend (`apps/api`)
@@ -116,7 +116,7 @@ php artisan key:generate
 Edit `.env` to match your Laragon MySQL credentials. Laragon's default is `root` with an empty password, but check yours. Then set a local demo password:
 
 ```dotenv
-DB_DATABASE=monitra
+DB_DATABASE=monitraz
 DB_USERNAME=root
 DB_PASSWORD=
 DEMO_USER_PASSWORD=choose-a-local-password
@@ -131,7 +131,7 @@ php artisan migrate --seed
 To create your own account instead of (or alongside) the demo account:
 
 ```bash
-php artisan monitra:create-user --name="Jane Doe" --email=jane@example.com
+php artisan monitraz:create-user --name="Jane Doe" --email=jane@example.com
 ```
 
 ### 3. Frontend (`apps/web`)
@@ -151,20 +151,20 @@ cp .env.example .env.local
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `APP_URL` | `http://localhost:8000` | API origin |
-| `DB_*` | `mysql` / `monitra` / `root` | MySQL connection |
+| `DB_*` | `mysql` / `monitraz` / `root` | MySQL connection |
 | `FRONTEND_URL` | `http://localhost:3000` | Allowed CORS origin(s), comma-separated |
 | `SANCTUM_STATEFUL_DOMAINS` | `localhost:3000,127.0.0.1:3000` | Hosts that receive cookie-based session auth |
 | `SESSION_DRIVER` / `SESSION_ENCRYPT` | `database` / `true` | Encrypted server-side sessions |
 | `SESSION_SECURE_COOKIE` | `false` | Set to `true` behind HTTPS in production |
-| `MONITRA_CONNECT_TIMEOUT` | `5` | Seconds to establish a connection |
-| `MONITRA_REQUEST_TIMEOUT` | `10` | Total seconds per check |
-| `MONITRA_MAX_RESPONSE_BYTES` | `1048576` | Abort checks whose body exceeds this size |
-| `MONITRA_DNS_TIMEOUT` / `MONITRA_DNS_ATTEMPTS` | `2` / `2` | DNS lookup limit: seconds per attempt and attempts per nameserver (applied on glibc/Linux via `RES_OPTIONS`) |
-| `MONITRA_ALLOWED_PORTS` | `80,443,8080,8443` | TCP ports that may be monitored |
-| `MONITRA_SCHEDULER_BATCH_SIZE` | `50` | Maximum endpoints per scheduler run |
-| `MONITRA_MAX_ENDPOINTS_PER_USER` | `50` | Live endpoints an account may register |
-| `MONITRA_RETENTION_DAYS` | `90` | Days of check history kept by `monitra:prune-checks` |
-| `DEMO_USER_EMAIL` / `DEMO_USER_PASSWORD` | `demo@monitra.test` / *(empty)* | Local demo account. An empty password generates a random one and prints it |
+| `MONITRAZ_CONNECT_TIMEOUT` | `5` | Seconds to establish a connection |
+| `MONITRAZ_REQUEST_TIMEOUT` | `10` | Total seconds per check |
+| `MONITRAZ_MAX_RESPONSE_BYTES` | `1048576` | Abort checks whose body exceeds this size |
+| `MONITRAZ_DNS_TIMEOUT` / `MONITRAZ_DNS_ATTEMPTS` | `2` / `2` | DNS lookup limit: seconds per attempt and attempts per nameserver (applied on glibc/Linux via `RES_OPTIONS`) |
+| `MONITRAZ_ALLOWED_PORTS` | `80,443,8080,8443` | TCP ports that may be monitored |
+| `MONITRAZ_SCHEDULER_BATCH_SIZE` | `50` | Maximum endpoints per scheduler run |
+| `MONITRAZ_MAX_ENDPOINTS_PER_USER` | `50` | Live endpoints an account may register |
+| `MONITRAZ_RETENTION_DAYS` | `90` | Days of check history kept by `monitraz:prune-checks` |
+| `DEMO_USER_EMAIL` / `DEMO_USER_PASSWORD` | `demo@monitraz.test` / *(empty)* | Local demo account. An empty password generates a random one and prints it |
 
 ### `apps/web/.env.local`
 
@@ -196,9 +196,9 @@ npm run dev
 
 Open <http://localhost:3000> and sign in with `DEMO_USER_EMAIL` / `DEMO_USER_PASSWORD`.
 
-> Checks only run while the scheduler is running. You can also trigger checks once with `php artisan monitra:check-due` or with **Check now** in the UI. On a server, add the standard cron entry: `* * * * * php /path/to/apps/api/artisan schedule:run`.
+> Checks only run while the scheduler is running. You can also trigger checks once with `php artisan monitraz:check-due` or with **Check now** in the UI. On a server, add the standard cron entry: `* * * * * php /path/to/apps/api/artisan schedule:run`.
 
-The scheduler also runs `monitra:prune-checks` daily at 03:15, deleting check results older than `MONITRA_RETENTION_DAYS`. Run it manually with `php artisan monitra:prune-checks [--days=N]`.
+The scheduler also runs `monitraz:prune-checks` daily at 03:15, deleting check results older than `MONITRAZ_RETENTION_DAYS`. Run it manually with `php artisan monitraz:prune-checks [--days=N]`.
 
 Production frontend build:
 
@@ -216,13 +216,13 @@ The `.env.example` defaults are for **local development**. Before deploying the 
 APP_ENV=production
 APP_DEBUG=false                 # never expose stack traces publicly
 APP_URL=https://api.your-domain.com
-FRONTEND_URL=https://monitra.your-domain.com
-SANCTUM_STATEFUL_DOMAINS=monitra.your-domain.com
+FRONTEND_URL=https://monitraz.your-domain.com
+SANCTUM_STATEFUL_DOMAINS=monitraz.your-domain.com
 SESSION_DOMAIN=.your-domain.com  # shared parent domain of API and frontend
 SESSION_SECURE_COOKIE=true      # HTTPS-only cookies
 ```
 
-Then run `php artisan key:generate` (once), `php artisan migrate --force` and `php artisan config:cache`, and add the scheduler cron entry. Do **not** run `db:seed` in production: the demo seeder refuses to run outside `local`/`testing`. Create accounts with `php artisan monitra:create-user` instead.
+Then run `php artisan key:generate` (once), `php artisan migrate --force` and `php artisan config:cache`, and add the scheduler cron entry. Do **not** run `db:seed` in production: the demo seeder refuses to run outside `local`/`testing`. Create accounts with `php artisan monitraz:create-user` instead.
 
 ## Running tests
 
@@ -257,7 +257,7 @@ All routes are JSON, under `/api`, and require an authenticated session except `
 | `GET` | `/api/auth/user` | Current user |
 | `GET` | `/api/dashboard?range=24h\|7d&source=live\|all` | KPIs, time series and recent incidents (`live`, the default, excludes simulated demo data) |
 | `GET` | `/api/endpoints?search=&status=` | List endpoints with latest check and 24h stats |
-| `POST` | `/api/endpoints` | Create an endpoint (limited to `MONITRA_MAX_ENDPOINTS_PER_USER`) |
+| `POST` | `/api/endpoints` | Create an endpoint (limited to `MONITRAZ_MAX_ENDPOINTS_PER_USER`) |
 | `GET` | `/api/endpoints/{id}` | Endpoint detail |
 | `PUT`/`PATCH` | `/api/endpoints/{id}` | Update (PATCH allows partial, e.g. `is_enabled`) |
 | `DELETE` | `/api/endpoints/{id}` | Delete with its history |
@@ -277,15 +277,15 @@ Full request and response details: [`docs/api.md`](docs/api.md).
   - Every DNS answer (A and AAAA) must be publicly routable. Loopback, private (RFC 1918), CGNAT, link-local (cloud metadata `169.254.169.254`), multicast, reserved, documentation, IPv6 ULA and link-local, IPv4-mapped, NAT64, 6to4 and Teredo ranges are all blocked. If *any* answer is private, the URL is rejected.
   - The request is **pinned to the validated IP** with `CURLOPT_RESOLVE`, so cURL never performs a second lookup. This defeats DNS rebinding between validation and connection. The connected IP is verified again afterwards.
   - Redirects are never followed, environment proxies are ignored, the response body is capped, and the only method is `GET`.
-  - DNS lookups are time-bounded (`MONITRA_DNS_TIMEOUT` × `MONITRA_DNS_ATTEMPTS` per nameserver on glibc; other resolvers use OS defaults), so a slow resolver can't stall the scheduler indefinitely.
+  - DNS lookups are time-bounded (`MONITRAZ_DNS_TIMEOUT` × `MONITRAZ_DNS_ATTEMPTS` per nameserver on glibc; other resolvers use OS defaults), so a slow resolver can't stall the scheduler indefinitely.
   - The guard runs on create and update (validation) **and** again on every check.
 - **Authentication:** Sanctum SPA session cookies (HttpOnly, encrypted, `SameSite=Lax`), CSRF tokens on every mutation, session regeneration on login and invalidation on logout, and login rate limiting (5/min per email+IP).
 - **Authorisation:** every endpoint, check and incident query is scoped to the owner. Foreign IDs return `404` to prevent enumeration, and history filters validate endpoint ownership.
 - **CORS:** only `FRONTEND_URL` origins, with credentials. Preflight responses are cached for 2 hours.
 - **Security headers:** the API sends `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, a deny-all CSP for its JSON responses, and HSTS over HTTPS. The dashboard sends `nosniff`, frame denial, a strict referrer policy, a restrictive `Permissions-Policy`, and a CSP limiting framing, plugins, `base-uri` and form targets. The dashboard is marked `noindex`.
-- **Abuse limits:** at most `MONITRA_MAX_ENDPOINTS_PER_USER` live endpoints per account (default 50), and manual checks are limited to 10 per minute.
+- **Abuse limits:** at most `MONITRAZ_MAX_ENDPOINTS_PER_USER` live endpoints per account (default 50), and manual checks are limited to 10 per minute.
 - **Safe errors:** raw exception messages, which can leak internal addresses, are never stored or returned. Checks store a sanitised category.
-- **No public sign-up:** accounts are provisioned with `php artisan monitra:create-user`. The demo seeder refuses to run outside `local`/`testing`.
+- **No public sign-up:** accounts are provisioned with `php artisan monitraz:create-user`. The demo seeder refuses to run outside `local`/`testing`.
 - **No secrets in Git:** `.env` files are ignored, and `.env.example` files contain no credentials.
 
 ## Demo data
@@ -299,7 +299,7 @@ Full request and response details: [`docs/api.md`](docs/api.md).
 
 The simulated history is generated relative to the moment you seed, so it ages over time. **Re-run `php artisan db:seed` at any time to refresh it.** Re-seeding is non-destructive: it replaces only the demo endpoints and their simulated history, keeps your own endpoints and their real checks, and adds the sample live endpoints only if they are missing. If `DEMO_USER_PASSWORD` is set, the demo account's password is synced to it; otherwise the existing password is kept.
 
-Remove all demo data from **Settings → Demo data**. Monitra monitors HTTP/API availability only and does not collect CPU, RAM or disk metrics.
+Remove all demo data from **Settings → Demo data**. MonitraZ monitors HTTP/API availability only and does not collect CPU, RAM or disk metrics.
 
 ## Screenshots
 
@@ -317,10 +317,10 @@ Captured from the running application.
 
 - **DNS timeouts** are enforced through glibc's `RES_OPTIONS`; on Windows/Laragon and musl-based images (e.g. Alpine) lookups use the operating system's own timeouts.
 - **Checks run sequentially** (one outbound request at a time). The default batch of 50 endpoints per minute suits small and medium installations; larger ones need a queue-based worker (see roadmap).
-- **The endpoint list is not paginated**: it is bounded by `MONITRA_MAX_ENDPOINTS_PER_USER` (default 50). Check history and incidents are paginated server-side.
+- **The endpoint list is not paginated**: it is bounded by `MONITRAZ_MAX_ENDPOINTS_PER_USER` (default 50). Check history and incidents are paginated server-side.
 - **History charts cover up to 7 days**; the *Last 30 days* and *All time* ranges apply to the check log.
 - **The dashboard CSP has no `script-src` rule**, because Next.js injects inline scripts that would need per-request nonces.
-- **Dependency advisory:** Next.js 15.5.29 (the latest 15.x release) bundles PostCSS 8.4.31, which `npm audit` flags. The issues require attacker-controlled CSS passing through PostCSS; Monitra only processes its own stylesheets at build time, so they are not exploitable here. Fixing them requires Next.js 16, a major upgrade deferred to avoid regression risk.
+- **Dependency advisory:** Next.js 15.5.29 (the latest 15.x release) bundles PostCSS 8.4.31, which `npm audit` flags. The issues require attacker-controlled CSS passing through PostCSS; MonitraZ only processes its own stylesheets at build time, so they are not exploitable here. Fixing them requires Next.js 16, a major upgrade deferred to avoid regression risk.
 - **No public sign-up, notifications or multi-region checks** in this MVP (see roadmap).
 
 ## Roadmap

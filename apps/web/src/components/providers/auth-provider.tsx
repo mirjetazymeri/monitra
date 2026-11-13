@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo } from "reac
 import { useRouter } from "next/navigation";
 import { useSWRConfig } from "swr";
 import { toast } from "sonner";
-import { useCurrentUser } from "@/hooks/use-monitra";
+import { useCurrentUser } from "@/hooks/use-monitraz";
 import { ApiError } from "@/lib/api/client";
 import { loginPathFor } from "@/lib/auth-redirect";
 import { authApi } from "@/lib/api/services";
@@ -57,7 +57,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-dvh items-center justify-center p-6">
         <ErrorState
-          title="Cannot reach Monitra"
+          title="Cannot reach MonitraZ"
           description={error instanceof ApiError ? error.message : "Unexpected error while loading your session."}
           onRetry={() => reload()}
         />

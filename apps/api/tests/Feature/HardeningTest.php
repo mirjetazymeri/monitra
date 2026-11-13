@@ -63,7 +63,7 @@ class HardeningTest extends TestCase
 
     public function test_dns_lookups_run_with_bounded_resolver_options(): void
     {
-        config(['monitra.dns_timeout' => 3, 'monitra.dns_attempts' => 1]);
+        config(['monitraz.dns_timeout' => 3, 'monitraz.dns_attempts' => 1]);
         $resolver = new SystemDnsResolver;
         putenv('RES_OPTIONS');
 
@@ -75,7 +75,7 @@ class HardeningTest extends TestCase
 
     public function test_resolver_limits_are_clamped_and_respect_operator_configuration(): void
     {
-        config(['monitra.dns_timeout' => 0, 'monitra.dns_attempts' => 99]);
+        config(['monitraz.dns_timeout' => 0, 'monitraz.dns_attempts' => 99]);
         $this->assertSame('timeout:1 attempts:5', (new SystemDnsResolver)->resolverOptions());
 
         putenv('RES_OPTIONS=timeout:9');

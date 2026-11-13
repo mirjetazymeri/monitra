@@ -1,6 +1,6 @@
-# Monitra Web
+# MonitraZ Web
 
-Next.js 15 (App Router, TypeScript, Tailwind CSS 4, shadcn/ui, Recharts) dashboard for [Monitra](../../README.md).
+Next.js 15 (App Router, TypeScript, Tailwind CSS 4, shadcn/ui, Recharts) dashboard for [MonitraZ](../../README.md).
 
 ```bash
 npm install

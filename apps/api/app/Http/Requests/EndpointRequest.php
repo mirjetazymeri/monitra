@@ -41,7 +41,7 @@ class EndpointRequest extends FormRequest
             'name' => [$required, 'string', 'min:2', 'max:120'],
             'url' => ['bail', $required, 'string', 'max:2048', 'url:http,https', new PublicHttpUrl],
             'expected_status' => [$required, 'integer', 'between:100,599'],
-            'check_interval' => [$required, 'integer', Rule::in(config('monitra.intervals'))],
+            'check_interval' => [$required, 'integer', Rule::in(config('monitraz.intervals'))],
             'is_enabled' => ['sometimes', 'boolean'],
         ];
     }
@@ -60,7 +60,7 @@ class EndpointRequest extends FormRequest
                     return;
                 }
 
-                $limit = (int) config('monitra.max_endpoints_per_user');
+                $limit = (int) config('monitraz.max_endpoints_per_user');
 
                 if ($this->user()->endpoints()->where('is_demo', false)->count() >= $limit) {
                     $validator->errors()->add('name', "You have reached the limit of {$limit} monitored endpoints.");

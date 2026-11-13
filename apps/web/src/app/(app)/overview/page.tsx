@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Activity, ArrowRight, CheckCircle2, Gauge, ShieldCheck, Timer, XCircle } from "lucide-react";
-import { useDashboard, useEndpoints } from "@/hooks/use-monitra";
+import { useDashboard, useEndpoints } from "@/hooks/use-monitraz";
 import type { DataSource, Range } from "@/lib/api/types";
 import { formatDateTime, formatDuration, formatMs, formatNumber, formatPercent } from "@/lib/format";
 import { KpiCard } from "@/components/common/kpi-card";

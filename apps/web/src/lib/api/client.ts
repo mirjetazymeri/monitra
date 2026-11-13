@@ -90,7 +90,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     }
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") throw error;
-    throw new ApiError("Unable to reach the Monitra API. Is the backend running?", 0);
+    throw new ApiError("Unable to reach the MonitraZ API. Is the backend running?", 0);
   }
 
   if (response.status === 204) return undefined as T;

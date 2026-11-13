@@ -3,7 +3,7 @@
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
-import { useEndpoints, useIncidents } from "@/hooks/use-monitra";
+import { useEndpoints, useIncidents } from "@/hooks/use-monitraz";
 import { Panel } from "@/components/common/panel";
 import { NativeSelect } from "@/components/common/native-select";
 import { EmptyState } from "@/components/common/empty-state";

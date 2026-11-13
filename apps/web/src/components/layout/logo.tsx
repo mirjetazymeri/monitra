@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Monitra brand mark: a pulse line inside a rounded square. */
+/** MonitraZ brand mark: a pulse line inside a rounded square. */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <span
@@ -21,7 +21,7 @@ export function Logo({ collapsed = false, className }: { collapsed?: boolean; cl
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark />
-      {!collapsed && <span className="font-heading text-lg font-bold tracking-tight text-foreground">Monitra</span>}
+      {!collapsed && <span className="font-heading text-lg font-bold tracking-tight text-foreground">MonitraZ</span>}
     </span>
   );
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FlaskConical, Loader2, LogOut, ShieldCheck, Trash2, User as UserIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/components/providers/auth-provider";
-import { useDashboard, useMonitoringSettings, useRefreshAll } from "@/hooks/use-monitra";
+import { useDashboard, useMonitoringSettings, useRefreshAll } from "@/hooks/use-monitraz";
 import { settingsApi } from "@/lib/api/services";
 import { ApiError } from "@/lib/api/client";
 import { formatBytes, formatDate, formatInterval } from "@/lib/format";
@@ -57,7 +57,7 @@ export default function SettingsPage() {
   return (
     <div className="grid gap-5 xl:grid-cols-2">
       <Panel>
-        <PanelHeader title="Account" description="Your Monitra identity" action={<UserIcon className="hidden size-4 text-subtle-foreground sm:block" aria-hidden="true" />} />
+        <PanelHeader title="Account" description="Your MonitraZ identity" action={<UserIcon className="hidden size-4 text-subtle-foreground sm:block" aria-hidden="true" />} />
         <dl className="divide-y divide-border px-5 pt-2">
           <Row label="Name">{user.name}</Row>
           <Row label="Email">{user.email}</Row>

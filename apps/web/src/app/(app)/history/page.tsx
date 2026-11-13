@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { History } from "lucide-react";
-import { useChecks, useDashboard, useEndpointMetrics, useEndpoints } from "@/hooks/use-monitra";
+import { useChecks, useDashboard, useEndpointMetrics, useEndpoints } from "@/hooks/use-monitraz";
 import { Panel, PanelHeader } from "@/components/common/panel";
 import { NativeSelect } from "@/components/common/native-select";
 import { EmptyState } from "@/components/common/empty-state";

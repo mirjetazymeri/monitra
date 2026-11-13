@@ -1,4 +1,4 @@
-# Monitra API reference
+# MonitraZ API reference
 
 Base URL: `http://localhost:8000`. All responses are JSON. Timestamps are ISO 8601 in UTC.
 
@@ -68,7 +68,7 @@ Query: `search` (name/URL), `status` (`up|down|pending|paused`).
 | `check_interval` | required, one of `60, 300, 600, 900, 1800, 3600` |
 | `is_enabled` | optional boolean |
 
-With `PATCH`, all fields are optional (e.g. `{ "is_enabled": false }`). Changing `url` or `expected_status` resets the status to `pending` and schedules an immediate check. Returns `201` (create) or `200` with the endpoint. Creating fails with `422` once the account has `MONITRA_MAX_ENDPOINTS_PER_USER` live endpoints (demo endpoints do not count).
+With `PATCH`, all fields are optional (e.g. `{ "is_enabled": false }`). Changing `url` or `expected_status` resets the status to `pending` and schedules an immediate check. Returns `201` (create) or `200` with the endpoint. Creating fails with `422` once the account has `MONITRAZ_MAX_ENDPOINTS_PER_USER` live endpoints (demo endpoints do not count).
 
 ### `DELETE /api/endpoints/{id}`
 
@@ -144,8 +144,8 @@ Query: `state` (`open|resolved`), `endpoint_id`, `page`, `per_page` (5–100, de
 
 | Command | Purpose |
 | --- | --- |
-| `php artisan monitra:check-due [--limit=N]` | Check all due endpoints once |
-| `php artisan schedule:work` | Run the scheduler locally (runs `monitra:check-due` every minute) |
-| `php artisan monitra:create-user [--name=] [--email=]` | Create an account (password prompted) |
-| `php artisan monitra:prune-checks [--days=N]` | Delete check results older than the retention period (scheduled daily at 03:15) |
+| `php artisan monitraz:check-due [--limit=N]` | Check all due endpoints once |
+| `php artisan schedule:work` | Run the scheduler locally (runs `monitraz:check-due` every minute) |
+| `php artisan monitraz:create-user [--name=] [--email=]` | Create an account (password prompted) |
+| `php artisan monitraz:prune-checks [--days=N]` | Delete check results older than the retention period (scheduled daily at 03:15) |
 | `php artisan db:seed` | Seed or refresh the demo workspace (local/testing only; replaces demo endpoints only) |

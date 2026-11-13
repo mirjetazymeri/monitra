@@ -10,14 +10,14 @@ use Illuminate\Console\Command;
  */
 class PruneCheckResults extends Command
 {
-    protected $signature = 'monitra:prune-checks {--days= : Delete results older than this many days}';
+    protected $signature = 'monitraz:prune-checks {--days= : Delete results older than this many days}';
 
     protected $description = 'Delete check results older than the configured retention period';
 
     public function handle(): int
     {
         $option = $this->option('days');
-        $days = (int) ($option !== null ? $option : config('monitra.retention_days'));
+        $days = (int) ($option !== null ? $option : config('monitraz.retention_days'));
 
         if ($days < 1) {
             $this->error('Retention must be at least 1 day.');

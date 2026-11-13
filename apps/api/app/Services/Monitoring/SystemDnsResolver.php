@@ -64,8 +64,8 @@ class SystemDnsResolver implements DnsResolver
 
     public function resolverOptions(): string
     {
-        $timeout = max(1, min(30, (int) config('monitra.dns_timeout')));
-        $attempts = max(1, min(5, (int) config('monitra.dns_attempts')));
+        $timeout = max(1, min(30, (int) config('monitraz.dns_timeout')));
+        $attempts = max(1, min(5, (int) config('monitraz.dns_attempts')));
 
         return "timeout:{$timeout} attempts:{$attempts}";
     }

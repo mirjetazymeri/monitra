@@ -41,7 +41,7 @@ class MonitoringTest extends TestCase
         $this->assertSame(EndpointStatus::Up, $endpoint->fresh()->current_status);
         $this->assertSame(0, $endpoint->fresh()->next_check_at->second, 'Next check is aligned to a minute boundary.');
 
-        Http::assertSent(fn (Request $r) => $r->method() === 'GET' && $r->hasHeader('User-Agent', config('monitra.user_agent')));
+        Http::assertSent(fn (Request $r) => $r->method() === 'GET' && $r->hasHeader('User-Agent', config('monitraz.user_agent')));
     }
 
     public function test_next_check_is_anchored_to_the_minute_so_intervals_do_not_drift(): void
@@ -188,7 +188,7 @@ class MonitoringTest extends TestCase
         Endpoint::factory()->disabled()->create(['url' => 'https://disabled.example.com/']);
         Endpoint::factory()->demo()->create(['url' => 'https://demo.example.com/']);
 
-        $this->artisan('monitra:check-due')->assertSuccessful();
+        $this->artisan('monitraz:check-due')->assertSuccessful();
 
         Http::assertSentCount(2);
         $this->assertSame(1, $due->checks()->count());
@@ -197,7 +197,7 @@ class MonitoringTest extends TestCase
         $this->assertSame(2, CheckResult::count());
 
         // Second run: nothing is due any more.
-        $this->artisan('monitra:check-due')->expectsOutput('No endpoints are due.')->assertSuccessful();
+        $this->artisan('monitraz:check-due')->expectsOutput('No endpoints are due.')->assertSuccessful();
     }
 
     public function test_scheduler_respects_batch_limit(): void
@@ -205,7 +205,7 @@ class MonitoringTest extends TestCase
         Http::fake(['*' => Http::response('ok', 200)]);
         Endpoint::factory()->count(3)->create();
 
-        $this->artisan('monitra:check-due', ['--limit' => 2])->assertSuccessful();
+        $this->artisan('monitraz:check-due', ['--limit' => 2])->assertSuccessful();
 
         $this->assertSame(2, CheckResult::count());
     }

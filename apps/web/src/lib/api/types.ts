@@ -1,4 +1,4 @@
-/** Response contracts of the Monitra Laravel API. */
+/** Response contracts of the MonitraZ Laravel API. */
 
 export type EndpointStatus = "up" | "down" | "pending" | "paused";
 

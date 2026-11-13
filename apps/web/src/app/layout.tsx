@@ -20,11 +20,11 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: {
-    default: "Monitra — Infrastructure & API Monitoring",
-    template: "%s · Monitra",
+    default: "MonitraZ — Infrastructure & API Monitoring",
+    template: "%s · MonitraZ",
   },
   description: "Monitor your infrastructure. Stay in control.",
-  applicationName: "Monitra",
+  applicationName: "MonitraZ",
   // An authenticated monitoring dashboard should never appear in search results.
   robots: { index: false, follow: false },
 };

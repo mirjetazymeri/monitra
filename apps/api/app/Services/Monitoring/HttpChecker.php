@@ -45,11 +45,11 @@ class HttpChecker
         try {
             $response = Http::withOptions($this->transportOptions($destination, $tooLarge))
                 ->withHeaders([
-                    'User-Agent' => config('monitra.user_agent'),
+                    'User-Agent' => config('monitraz.user_agent'),
                     'Accept' => '*/*',
                 ])
-                ->connectTimeout(config('monitra.connect_timeout'))
-                ->timeout(config('monitra.request_timeout'))
+                ->connectTimeout(config('monitraz.connect_timeout'))
+                ->timeout(config('monitraz.request_timeout'))
                 ->withoutRedirecting()
                 ->get($destination->url);
         } catch (Throwable $e) {
@@ -85,7 +85,7 @@ class HttpChecker
      */
     public function transportOptions(ResolvedDestination $destination, bool &$tooLarge): array
     {
-        $maxBytes = (int) config('monitra.max_response_bytes');
+        $maxBytes = (int) config('monitraz.max_response_bytes');
 
         $options = [
             'allow_redirects' => false,

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Header } from "./header";
 import { Sidebar } from "./sidebar";
 
-const STORAGE_KEY = "monitra.sidebar-collapsed";
+const STORAGE_KEY = "monitraz.sidebar-collapsed";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);

@@ -1,8 +1,8 @@
 {
-  "name": "monitra-web",
+  "name": "monitraz-web",
   "version": "0.1.0",
   "private": true,
-  "description": "Monitra web dashboard: Next.js frontend for infrastructure and API monitoring.",
+  "description": "MonitraZ web dashboard: Next.js frontend for infrastructure and API monitoring.",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",

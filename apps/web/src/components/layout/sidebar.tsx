@@ -69,7 +69,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       )}
     >
       <div className={cn("flex h-16 items-center border-b border-sidebar-border", collapsed ? "justify-center" : "px-5")}>
-        <Link href="/overview" aria-label="Monitra overview" className="rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <Link href="/overview" aria-label="MonitraZ overview" className="rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring">
           <Logo collapsed={collapsed} />
         </Link>
       </div>

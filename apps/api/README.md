@@ -1,6 +1,6 @@
-# Monitra API
+# MonitraZ API
 
-Laravel 13 REST API for [Monitra](../../README.md): authentication (Sanctum SPA sessions), endpoint management, SSRF-hardened HTTP health checks, scheduling, incidents and metrics.
+Laravel 13 REST API for [MonitraZ](../../README.md): authentication (Sanctum SPA sessions), endpoint management, SSRF-hardened HTTP health checks, scheduling, incidents and metrics.
 
 ```bash
 composer install

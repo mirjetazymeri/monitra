@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  // Re-declares the template so the nested endpoint detail route keeps the "· Monitra" suffix.
-  title: { default: "Endpoints", template: "%s · Monitra" },
+  // Re-declares the template so the nested endpoint detail route keeps the "· MonitraZ" suffix.
+  title: { default: "Endpoints", template: "%s · MonitraZ" },
   description: "Register and manage the HTTP services you monitor.",
 };
 

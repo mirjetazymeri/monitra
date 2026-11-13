@@ -118,8 +118,8 @@ class DestinationGuard
 
         $port = $parts['port'] ?? ($scheme === 'https' ? 443 : 80);
 
-        if (! in_array($port, config('monitra.allowed_ports'), true)) {
-            throw new BlockedDestinationException('This port is not allowed. Allowed ports: '.implode(', ', config('monitra.allowed_ports')).'.');
+        if (! in_array($port, config('monitraz.allowed_ports'), true)) {
+            throw new BlockedDestinationException('This port is not allowed. Allowed ports: '.implode(', ', config('monitraz.allowed_ports')).'.');
         }
 
         $host = strtolower(rtrim($parts['host'], '.'));

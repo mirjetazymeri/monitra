@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { Activity, Plus, Search, SearchX } from "lucide-react";
-import { useEndpoints } from "@/hooks/use-monitra";
+import { useEndpoints } from "@/hooks/use-monitraz";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Panel } from "@/components/common/panel";

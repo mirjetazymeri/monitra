@@ -117,7 +117,7 @@ class SsrfProtectionTest extends TestCase
         $this->assertSame(['http' => null, 'https' => null], $options['proxy'], 'Environment proxies must be ignored.');
 
         // The progress callback aborts transfers above the configured size limit.
-        $limit = config('monitra.max_response_bytes');
+        $limit = config('monitraz.max_response_bytes');
         $this->assertFalse($options['progress']($limit, 100));
         $this->assertTrue($options['progress']($limit + 1, 0));
         $this->assertTrue($tooLarge);

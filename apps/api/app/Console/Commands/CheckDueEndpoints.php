@@ -10,14 +10,14 @@ use Throwable;
 
 class CheckDueEndpoints extends Command
 {
-    protected $signature = 'monitra:check-due {--limit= : Maximum endpoints to check in this run}';
+    protected $signature = 'monitraz:check-due {--limit= : Maximum endpoints to check in this run}';
 
     protected $description = 'Run HTTP health checks for all enabled endpoints that are due';
 
     public function handle(MonitoringService $monitoring): int
     {
         // A cache lock prevents overlapping runs even when invoked manually alongside the scheduler.
-        $lock = Cache::lock('monitra:check-due', 600);
+        $lock = Cache::lock('monitraz:check-due', 600);
 
         if (! $lock->get()) {
             $this->warn('Another check run is in progress; skipping.');
@@ -26,7 +26,7 @@ class CheckDueEndpoints extends Command
         }
 
         try {
-            $limit = (int) ($this->option('limit') ?: config('monitra.scheduler_batch_size'));
+            $limit = (int) ($this->option('limit') ?: config('monitraz.scheduler_batch_size'));
 
             // Checks run sequentially: concurrency is bounded to one outbound request at a time.
             $endpoints = Endpoint::query()

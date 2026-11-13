@@ -20,20 +20,20 @@ class MaintenanceTest extends TestCase
         CheckResult::factory()->for($endpoint)->count(3)->create(['checked_at' => now()->subDays(100)]);
         $recent = CheckResult::factory()->for($endpoint)->count(2)->create(['checked_at' => now()->subDays(5)]);
 
-        config(['monitra.retention_days' => 90]);
-        $this->artisan('monitra:prune-checks')->expectsOutputToContain('Deleted 3')->assertSuccessful();
+        config(['monitraz.retention_days' => 90]);
+        $this->artisan('monitraz:prune-checks')->expectsOutputToContain('Deleted 3')->assertSuccessful();
 
         $this->assertEqualsCanonicalizing($recent->pluck('id')->all(), CheckResult::pluck('id')->all());
     }
 
     public function test_prune_command_rejects_invalid_retention(): void
     {
-        $this->artisan('monitra:prune-checks', ['--days' => 0])->assertFailed();
+        $this->artisan('monitraz:prune-checks', ['--days' => 0])->assertFailed();
     }
 
     public function test_endpoint_quota_is_enforced_on_creation_excluding_demo_endpoints(): void
     {
-        config(['monitra.max_endpoints_per_user' => 2]);
+        config(['monitraz.max_endpoints_per_user' => 2]);
         $user = User::factory()->create();
         Endpoint::factory()->for($user)->count(2)->create();
         Endpoint::factory()->for($user)->demo()->create();
@@ -51,10 +51,10 @@ class MaintenanceTest extends TestCase
 
     public function test_demo_seeder_is_non_destructive_when_re_run(): void
     {
-        config(['monitra.demo.email' => 'demo@monitra.test', 'monitra.demo.password' => 'local-demo-pass']);
+        config(['monitraz.demo.email' => 'demo@monitraz.test', 'monitraz.demo.password' => 'local-demo-pass']);
 
         $this->seed(DemoSeeder::class);
-        $user = User::where('email', 'demo@monitra.test')->sole();
+        $user = User::where('email', 'demo@monitraz.test')->sole();
         $this->assertTrue(Hash::check('local-demo-pass', $user->password));
 
         // A user-added endpoint with real history must survive a re-seed.

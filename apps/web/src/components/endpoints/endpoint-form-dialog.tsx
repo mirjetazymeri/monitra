@@ -16,7 +16,7 @@ import { ApiError } from "@/lib/api/client";
 import { endpointsApi } from "@/lib/api/services";
 import type { Endpoint, EndpointInput } from "@/lib/api/types";
 import { formatInterval } from "@/lib/format";
-import { useRefreshAll } from "@/hooks/use-monitra";
+import { useRefreshAll } from "@/hooks/use-monitraz";
 
 export const CHECK_INTERVALS = [60, 300, 600, 900, 1800, 3600] as const;
 
@@ -104,7 +104,7 @@ export function EndpointFormDialog({ open, onOpenChange, endpoint, onSaved }: Pr
         <DialogHeader>
           <DialogTitle className="font-heading text-lg">{isEdit ? "Edit endpoint" : "Add endpoint"}</DialogTitle>
           <DialogDescription>
-            Monitra sends a GET request without following redirects. Only public destinations are allowed.
+            MonitraZ sends a GET request without following redirects. Only public destinations are allowed.
           </DialogDescription>
         </DialogHeader>
 

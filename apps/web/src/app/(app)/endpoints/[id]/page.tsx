@@ -4,7 +4,7 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, CheckCircle2, ExternalLink, Gauge, History, Loader2, Pause, Pencil, Play, ShieldCheck, Timer, Trash2, Zap } from "lucide-react";
-import { useChecks, useEndpoint, useEndpointMetrics, useIncidents } from "@/hooks/use-monitra";
+import { useChecks, useEndpoint, useEndpointMetrics, useIncidents } from "@/hooks/use-monitraz";
 import { ApiError } from "@/lib/api/client";
 import type { Range } from "@/lib/api/types";
 import { formatDateTime, formatInterval, formatMs, formatNumber, formatPercent, formatRelative } from "@/lib/format";
@@ -47,7 +47,7 @@ export default function EndpointDetailPage({ params }: { params: Promise<{ id: s
   // Show the endpoint's name in the browser tab once it is known (metadata can't fetch authenticated data).
   const endpointName = endpoint.data?.name;
   useEffect(() => {
-    if (endpointName) document.title = `${endpointName} · Monitra`;
+    if (endpointName) document.title = `${endpointName} · MonitraZ`;
   }, [endpointName]);
 
   if (id === null || endpoint.error) {

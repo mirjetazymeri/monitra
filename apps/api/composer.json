@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "monitra/api",
+    "name": "monitraz/api",
     "type": "project",
-    "description": "Monitra API: Laravel REST backend for infrastructure and API monitoring, with SSRF-hardened HTTP health checks, scheduling and incident tracking.",
-    "keywords": ["monitra", "monitoring", "uptime", "health-check", "api-monitoring", "incidents", "laravel"],
+    "description": "MonitraZ API: Laravel REST backend for infrastructure and API monitoring, with SSRF-hardened HTTP health checks, scheduling and incident tracking.",
+    "keywords": ["monitraz", "monitoring", "uptime", "health-check", "api-monitoring", "incidents", "laravel"],
     "license": "MIT",
     "require": {
         "php": "^8.3",

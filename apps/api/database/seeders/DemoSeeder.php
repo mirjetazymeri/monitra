@@ -28,8 +28,8 @@ class DemoSeeder extends Seeder
 
     public function run(): void
     {
-        $email = (string) config('monitra.demo.email');
-        $password = (string) config('monitra.demo.password');
+        $email = (string) config('monitraz.demo.email');
+        $password = (string) config('monitraz.demo.password');
         $user = User::query()->where('email', $email)->first();
         $generated = null;
 
