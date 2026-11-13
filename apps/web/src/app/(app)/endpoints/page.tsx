@@ -1,6 +1,7 @@
 "use client";
 
-import { useDeferredValue, useState } from "react";
+import { useState } from "react";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { Activity, Plus, Search, SearchX } from "lucide-react";
 import { useEndpoints } from "@/hooks/use-monitra";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,8 @@ export default function EndpointsPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [creating, setCreating] = useState(false);
-  const deferredSearch = useDeferredValue(search.trim());
+  // Debounced: the API is queried once typing pauses, not on every keystroke.
+  const deferredSearch = useDebouncedValue(search.trim(), 300);
   const { data, error, mutate, isValidating } = useEndpoints({ search: deferredSearch || undefined, status: status || undefined });
 
   const filtered = Boolean(deferredSearch || status);
