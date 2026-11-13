@@ -18,6 +18,12 @@ return [
 
     'max_response_bytes' => (int) env('MONITRA_MAX_RESPONSE_BYTES', 1024 * 1024),
 
+    // DNS lookup limits (seconds per attempt, attempts per nameserver). Applied through
+    // glibc's RES_OPTIONS; other resolvers keep their OS defaults.
+    'dns_timeout' => (int) env('MONITRA_DNS_TIMEOUT', 2),
+
+    'dns_attempts' => (int) env('MONITRA_DNS_ATTEMPTS', 2),
+
     'user_agent' => 'MonitraHealthCheck/1.0 (+https://github.com/monitra)',
 
     /*

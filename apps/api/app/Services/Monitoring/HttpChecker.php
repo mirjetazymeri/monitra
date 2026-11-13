@@ -28,10 +28,15 @@ class HttpChecker
 
     public function check(Endpoint $endpoint): CheckOutcome
     {
+        $resolutionStarted = hrtime(true);
+
         try {
             $destination = $this->guard->resolve($endpoint->url);
         } catch (BlockedDestinationException $e) {
-            return CheckOutcome::failure($e->dnsFailure ? CheckErrorCategory::DnsFailure : CheckErrorCategory::BlockedDestination);
+            // A DNS failure records how long the lookup took, so slow resolvers are visible.
+            return $e->dnsFailure
+                ? CheckOutcome::failure(CheckErrorCategory::DnsFailure, $this->elapsedMs($resolutionStarted))
+                : CheckOutcome::failure(CheckErrorCategory::BlockedDestination);
         }
 
         $tooLarge = false;

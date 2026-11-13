@@ -158,6 +158,7 @@ cp .env.example .env.local
 | `MONITRA_CONNECT_TIMEOUT` | `5` | Seconds to establish a connection |
 | `MONITRA_REQUEST_TIMEOUT` | `10` | Total seconds per check |
 | `MONITRA_MAX_RESPONSE_BYTES` | `1048576` | Abort checks whose body exceeds this size |
+| `MONITRA_DNS_TIMEOUT` / `MONITRA_DNS_ATTEMPTS` | `2` / `2` | DNS lookup limit: seconds per attempt and attempts per nameserver (applied on glibc/Linux via `RES_OPTIONS`) |
 | `MONITRA_ALLOWED_PORTS` | `80,443,8080,8443` | TCP ports that may be monitored |
 | `MONITRA_SCHEDULER_BATCH_SIZE` | `50` | Maximum endpoints per scheduler run |
 | `MONITRA_MAX_ENDPOINTS_PER_USER` | `50` | Live endpoints an account may register |
@@ -273,6 +274,7 @@ Full request and response details: [`docs/api.md`](docs/api.md).
   - Every DNS answer (A and AAAA) must be publicly routable. Loopback, private (RFC 1918), CGNAT, link-local (cloud metadata `169.254.169.254`), multicast, reserved, documentation, IPv6 ULA and link-local, IPv4-mapped, NAT64, 6to4 and Teredo ranges are all blocked. If *any* answer is private, the URL is rejected.
   - The request is **pinned to the validated IP** with `CURLOPT_RESOLVE`, so cURL never performs a second lookup. This defeats DNS rebinding between validation and connection. The connected IP is verified again afterwards.
   - Redirects are never followed, environment proxies are ignored, the response body is capped, and the only method is `GET`.
+  - DNS lookups are time-bounded (`MONITRA_DNS_TIMEOUT` × `MONITRA_DNS_ATTEMPTS` per nameserver on glibc; other resolvers use OS defaults), so a slow resolver can't stall the scheduler indefinitely.
   - The guard runs on create and update (validation) **and** again on every check.
 - **Authentication:** Sanctum SPA session cookies (HttpOnly, encrypted, `SameSite=Lax`), CSRF tokens on every mutation, session regeneration on login and invalidation on logout, and login rate limiting (5/min per email+IP).
 - **Authorisation:** every endpoint, check and incident query is scoped to the owner. Foreign IDs return `404` to prevent enumeration, and history filters validate endpoint ownership.
