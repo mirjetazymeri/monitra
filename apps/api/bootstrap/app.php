@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Session + CSRF protection for requests coming from the first-party SPA (Sanctum).
         $middleware->statefulApi();
+
+        // Baseline security headers on every response. Prepended so it wraps HandleCors,
+        // which answers preflight requests itself, and the headers cover those too.
+        $middleware->prepend(SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
