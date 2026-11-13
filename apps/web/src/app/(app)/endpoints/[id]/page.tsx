@@ -84,7 +84,7 @@ export default function EndpointDetailPage({ params }: { params: Promise<{ id: s
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2.5">
-                <h2 className="truncate text-2xl font-bold text-foreground">{e.name}</h2>
+                <h2 className="min-w-0 text-2xl font-bold break-words text-foreground">{e.name}</h2>
                 <StatusBadge status={e.status} />
                 {e.is_demo && <DemoBadge />}
               </div>
@@ -121,7 +121,7 @@ export default function EndpointDetailPage({ params }: { params: Promise<{ id: s
               </dl>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
               <Button size="lg" onClick={() => void runCheck(e)} disabled={e.is_demo || Boolean(action)} title={e.is_demo ? "Demo endpoints are never checked live" : undefined}>
                 {action === "check" ? <Loader2 className="animate-spin" /> : <Zap />}
                 {action === "check" ? "Checking…" : "Check now"}
@@ -134,8 +134,9 @@ export default function EndpointDetailPage({ params }: { params: Promise<{ id: s
                 <Pencil />
                 Edit
               </Button>
-              <Button size="lg" variant="destructive" onClick={() => setDeleting(true)} disabled={Boolean(action)} aria-label="Delete endpoint">
+              <Button size="lg" variant="destructive" onClick={() => setDeleting(true)} disabled={Boolean(action)}>
                 <Trash2 />
+                Delete
               </Button>
             </div>
           </div>
