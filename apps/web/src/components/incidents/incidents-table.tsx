@@ -14,7 +14,7 @@ interface Props {
 export function IncidentsTable({ incidents, showEndpoint = true }: Props) {
   return (
     <>
-      <div className="hidden overflow-x-auto lg:block scrollbar-thin">
+      <div className="hidden overflow-x-auto xl:block scrollbar-thin">
         <Table className="min-w-[760px]">
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
@@ -66,7 +66,7 @@ export function IncidentsTable({ incidents, showEndpoint = true }: Props) {
         </Table>
       </div>
 
-      <ul className="divide-y divide-border lg:hidden">
+      <ul className="divide-y divide-border xl:hidden">
         {incidents.map((incident) => (
           <li key={incident.id} className="px-4 py-4">
             <div className="flex items-start justify-between gap-3">

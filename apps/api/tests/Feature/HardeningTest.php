@@ -28,6 +28,20 @@ class HardeningTest extends TestCase
         }
     }
 
+    public function test_api_not_found_responses_do_not_leak_internal_class_names(): void
+    {
+        $user = User::factory()->create();
+        $foreign = Endpoint::factory()->create();
+
+        foreach (['/api/endpoints/999999', "/api/endpoints/{$foreign->id}", '/api/endpoints/999999/metrics', '/api/does-not-exist'] as $uri) {
+            $response = $this->actingAs($user)->getJson($uri)->assertNotFound()->assertExactJson(['message' => 'Resource not found.']);
+            $this->assertStringNotContainsString('App\\Models', $response->getContent());
+        }
+
+        // Other errors keep their normal shape.
+        $this->actingAs($user)->getJson('/api/dashboard?range=1y')->assertUnprocessable()->assertJsonValidationErrors('range');
+    }
+
     public function test_hsts_is_only_sent_over_https(): void
     {
         $this->get('https://localhost/up')->assertHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');

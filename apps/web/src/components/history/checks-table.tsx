@@ -14,7 +14,7 @@ interface Props {
 export function ChecksTable({ checks, showEndpoint = true }: Props) {
   return (
     <>
-      <div className="hidden overflow-x-auto lg:block scrollbar-thin">
+      <div className="hidden overflow-x-auto xl:block scrollbar-thin">
         <Table className="min-w-[720px]">
           <TableHeader>
             <TableRow className="border-border hover:bg-transparent">
@@ -58,7 +58,7 @@ export function ChecksTable({ checks, showEndpoint = true }: Props) {
         </Table>
       </div>
 
-      <ul className="divide-y divide-border lg:hidden">
+      <ul className="divide-y divide-border xl:hidden">
         {checks.map((check) => (
           <li key={check.id} className="flex items-center justify-between gap-3 px-4 py-3">
             <div className="min-w-0">

@@ -23,7 +23,7 @@ interface KpiCardProps {
 
 export function KpiCard({ label, value, hint, icon: Icon, tone = "primary", loading }: KpiCardProps) {
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-card">
+    <div className="flex min-w-0 flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-card">
       <div className="flex items-center justify-between gap-3">
         <span className="text-[13px] font-medium text-muted-foreground">{label}</span>
         <span className={cn("inline-flex size-8 items-center justify-center rounded-lg", TONES[tone])}>

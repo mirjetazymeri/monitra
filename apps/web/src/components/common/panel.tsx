@@ -2,7 +2,9 @@ import { cn } from "@/lib/utils";
 
 /** Base surface used for every dashboard section. */
 export function Panel({ className, ...props }: React.ComponentProps<"section">) {
-  return <section className={cn("rounded-xl border border-border bg-card shadow-card", className)} {...props} />;
+  // min-w-0: as a grid/flex item a panel must be allowed to shrink, otherwise one long
+  // unbreakable value (e.g. a truncated endpoint name) widens the whole column on phones.
+  return <section className={cn("min-w-0 rounded-xl border border-border bg-card shadow-card", className)} {...props} />;
 }
 
 interface PanelHeaderProps {

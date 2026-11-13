@@ -6,6 +6,7 @@ import { useSWRConfig } from "swr";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/hooks/use-monitra";
 import { ApiError } from "@/lib/api/client";
+import { loginPathFor } from "@/lib/auth-redirect";
 import { authApi } from "@/lib/api/services";
 import type { User } from "@/lib/api/types";
 import { FullPageLoader } from "@/components/common/full-page-loader";
@@ -33,7 +34,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   const unauthenticated = error instanceof ApiError && error.isUnauthenticated;
 
   useEffect(() => {
-    if (unauthenticated) router.replace("/login");
+    if (unauthenticated) router.replace(loginPathFor(window.location.pathname + window.location.search));
   }, [unauthenticated, router]);
 
   const logout = useCallback(async () => {

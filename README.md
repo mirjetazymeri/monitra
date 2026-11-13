@@ -37,7 +37,8 @@ It is built as a monorepo: a **Laravel 13** REST API (`apps/api`) and a **Next.j
 - **Incidents page** with state and endpoint filters, start and resolve times, and durations.
 - **Session authentication** with Laravel Sanctum (cookie-based SPA auth, CSRF protection, ownership checks on every resource).
 - **Clearly separated demo data:** simulated endpoints are flagged and labelled "Demo" and are never mixed with live measurements.
-- **Responsive UI:** a collapsible sidebar on desktop, a navigation sheet on mobile, and tables that become cards on small screens.
+- **Responsive UI:** a collapsible sidebar on desktop, a navigation sheet on mobile and tablet, and tables that become cards below 1280 px. Verified without horizontal overflow at 1440, 1280, 1024, 768, 390 and 375 px.
+- **Session handling:** an expired session redirects to sign-in and returns you to the page you were on (validated against open redirects); cached data is cleared on sign-in so nothing carries over between sessions.
 
 > Uptime figures are **observed, check-based availability**: successful checks divided by recorded checks. They are computed only from persisted results. When nothing was recorded, Monitra shows "—" rather than 100%.
 
@@ -226,15 +227,17 @@ Then run `php artisan key:generate` (once), `php artisan migrate --force` and `p
 ## Running tests
 
 ```bash
-# Backend: 79 PHPUnit tests (SQLite in-memory, no network or DNS access)
+# Backend: 86 PHPUnit tests (SQLite in-memory, no network or DNS access)
 cd apps/api
 php artisan test
 vendor/bin/pint --test
+composer validate --no-check-publish
 ```
 
 ```bash
-# Frontend: type-check, lint and production build
+# Frontend: unit tests (Node's built-in runner), type-check, lint and production build
 cd apps/web
+npm test
 npx tsc --noEmit
 npm run lint
 npm run build
@@ -300,11 +303,25 @@ Remove all demo data from **Settings → Demo data**. Monitra monitors HTTP/API 
 
 ## Screenshots
 
-| Endpoints | Overview (mobile) |
+Captured from the running application.
+
+**Overview** (with *Include demo* selected, so figures include the labelled simulated history):
+
+![Overview dashboard](docs/screenshots/overview.jpg)
+
+| Endpoints | Overview on a phone (live data only) |
 | --- | --- |
 | ![Endpoints](docs/screenshots/endpoints.jpg) | ![Overview on mobile](docs/screenshots/overview-mobile.jpg) |
 
-*Add full-resolution captures of the Overview, Endpoint detail and Incidents pages to `docs/screenshots/`.*
+## Known limitations
+
+- **DNS timeouts** are enforced through glibc's `RES_OPTIONS`; on Windows/Laragon and musl-based images (e.g. Alpine) lookups use the operating system's own timeouts.
+- **Checks run sequentially** (one outbound request at a time). The default batch of 50 endpoints per minute suits small and medium installations; larger ones need a queue-based worker (see roadmap).
+- **The endpoint list is not paginated**: it is bounded by `MONITRA_MAX_ENDPOINTS_PER_USER` (default 50). Check history and incidents are paginated server-side.
+- **History charts cover up to 7 days**; the *Last 30 days* and *All time* ranges apply to the check log.
+- **The dashboard CSP has no `script-src` rule**, because Next.js injects inline scripts that would need per-request nonces.
+- **Dependency advisory:** Next.js 15.5.29 (the latest 15.x release) bundles PostCSS 8.4.31, which `npm audit` flags. The issues require attacker-controlled CSS passing through PostCSS; Monitra only processes its own stylesheets at build time, so they are not exploitable here. Fixing them requires Next.js 16, a major upgrade deferred to avoid regression risk.
+- **No public sign-up, notifications or multi-region checks** in this MVP (see roadmap).
 
 ## Roadmap
 

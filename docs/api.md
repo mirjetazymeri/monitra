@@ -17,7 +17,7 @@ Send requests with `credentials: "include"` from an origin listed in `SANCTUM_ST
 | --- | --- |
 | `401` | Not authenticated |
 | `403` | Action not allowed (e.g. a live check on a demo endpoint) |
-| `404` | Resource does not exist **or belongs to another user** |
+| `404` | Resource does not exist **or belongs to another user**. The body is always `{ "message": "Resource not found." }`, so internal model names are never exposed |
 | `419` | CSRF token mismatch: refresh `/sanctum/csrf-cookie` |
 | `422` | Validation failed: `{ message, errors: { field: [messages] } }` |
 | `429` | Rate limited |

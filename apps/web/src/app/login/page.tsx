@@ -13,6 +13,12 @@ import { Logo } from "@/components/layout/logo";
 import { ApiError, apiRequest } from "@/lib/api/client";
 import { authApi } from "@/lib/api/services";
 import type { User } from "@/lib/api/types";
+import { clearCachedData, safeNextPath } from "@/lib/auth-redirect";
+
+/** Where to go after signing in: the validated ?next= path, or the overview. Read at call time (no useSearchParams, so the page stays static). */
+function nextDestination(): string {
+  return safeNextPath(new URLSearchParams(window.location.search).get("next"));
+}
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
@@ -37,10 +43,13 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(schema), defaultValues: { email: "", password: "", remember: true } });
 
-  // Already signed in? Go straight to the dashboard.
+  // Arriving here means there is no valid session (sign-out or expiry): purge any cached
+  // API data so nothing from a previous session can flash for the next user.
+  // Then, if a session does exist after all, go straight to the dashboard.
   useEffect(() => {
+    void clearCachedData();
     apiRequest<{ user: User }>("/api/auth/user")
-      .then(() => router.replace("/overview"))
+      .then(() => router.replace(nextDestination()))
       .catch(() => undefined);
   }, [router]);
 
@@ -48,7 +57,7 @@ export default function LoginPage() {
     setFormError(null);
     try {
       await authApi.login(values.email, values.password, values.remember);
-      router.replace("/overview");
+      router.replace(nextDestination());
     } catch (error) {
       if (error instanceof ApiError && error.status === 422) {
         setFormError(error.errors.email?.[0] ?? error.errors.password?.[0] ?? error.message);
