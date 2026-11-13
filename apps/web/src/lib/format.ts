@@ -37,6 +37,13 @@ const dateTime = new Intl.DateTimeFormat("en-US", {
   hour12: false,
 });
 
+const dateOnly = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+export function formatDate(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  return dateOnly.format(new Date(iso));
+}
+
 export function formatDateTime(iso: string | null | undefined): string {
   if (!iso) return "—";
   return dateTime.format(new Date(iso));

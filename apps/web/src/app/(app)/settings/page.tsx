@@ -7,7 +7,7 @@ import { useAuth } from "@/components/providers/auth-provider";
 import { useDashboard, useMonitoringSettings, useRefreshAll } from "@/hooks/use-monitra";
 import { settingsApi } from "@/lib/api/services";
 import { ApiError } from "@/lib/api/client";
-import { formatBytes, formatDateTime, formatInterval } from "@/lib/format";
+import { formatBytes, formatDate, formatInterval } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -57,11 +57,11 @@ export default function SettingsPage() {
   return (
     <div className="grid gap-5 xl:grid-cols-2">
       <Panel>
-        <PanelHeader title="Account" description="Your Monitra identity" action={<UserIcon className="size-4 text-subtle-foreground" />} />
+        <PanelHeader title="Account" description="Your Monitra identity" action={<UserIcon className="hidden size-4 text-subtle-foreground sm:block" aria-hidden="true" />} />
         <dl className="divide-y divide-border px-5 pt-2">
           <Row label="Name">{user.name}</Row>
           <Row label="Email">{user.email}</Row>
-          <Row label="Member since">{formatDateTime(user.created_at)}</Row>
+          <Row label="Member since">{formatDate(user.created_at)}</Row>
         </dl>
         <div className="flex justify-end border-t border-border px-5 py-4">
           <Button variant="outline" size="lg" onClick={() => void logout()}>
@@ -75,7 +75,7 @@ export default function SettingsPage() {
         <PanelHeader
           title="Monitoring policy"
           description="Enforced by the server for every check (read-only)"
-          action={<ShieldCheck className="size-4 text-success" />}
+          action={<ShieldCheck className="hidden size-4 text-success sm:block" aria-hidden="true" />}
         />
         {s ? (
           <dl className="divide-y divide-border px-5 pt-2 pb-2">
@@ -101,7 +101,7 @@ export default function SettingsPage() {
       </Panel>
 
       <Panel className="xl:col-span-2">
-        <PanelHeader title="Demo data" description="Simulated endpoints seeded for local evaluation" action={<FlaskConical className="size-4 text-cyan" />} />
+        <PanelHeader title="Demo data" description="Simulated endpoints seeded for local evaluation" action={<FlaskConical className="hidden size-4 text-cyan sm:block" aria-hidden="true" />} />
         <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-2xl text-sm text-muted-foreground">
             Demo endpoints use reserved <span className="font-mono text-foreground">.example</span> domains. Their history is generated, flagged as simulated, and they are never checked live. Removing them keeps your live endpoints and their real history untouched.
