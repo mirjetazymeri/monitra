@@ -1,0 +1,161 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Monitra design tokens.
+ * Dark-first palette; every component consumes these semantic variables
+ * rather than raw hex values.
+ */
+:root {
+  /* Surfaces */
+  --background: #090d16;
+  --sidebar: #0f172a;
+  --card: #151d2e;
+  --elevated: #1e293b;
+  --popover: #1a2335;
+
+  /* Text */
+  --foreground: #f8fafc;
+  --muted-foreground: #94a3b8;
+  /* Lightened from slate-500 so small text reaches WCAG AA (≥4.5:1 on cards and elevated surfaces). */
+  --subtle-foreground: #8090a6;
+
+  /* Brand: --primary is the accent (links, icons, charts, focus).
+     --primary-solid is the filled-button shade, dark enough for white text (4.9:1). */
+  --primary: #3b82f6;
+  --primary-solid: #2563eb;
+  --primary-foreground: #f8fafc;
+  --accent-cyan: #22d3ee;
+
+  /* Status: --destructive is used for text/dots (5.2:1 on cards);
+     --destructive-solid backs white text on danger buttons (4.8:1). */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --destructive: #f35b5b;
+  --destructive-solid: #dc2626;
+  --neutral: #64748b;
+
+  /* Lines & controls */
+  --border: rgb(148 163 184 / 0.12);
+  --border-strong: rgb(148 163 184 / 0.22);
+  --input: rgb(148 163 184 / 0.18);
+  --ring: #3b82f6;
+
+  /* shadcn semantic aliases */
+  --card-foreground: var(--foreground);
+  --popover-foreground: var(--foreground);
+  --secondary: var(--elevated);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--elevated);
+  --accent: var(--elevated);
+  --accent-foreground: var(--foreground);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: rgb(59 130 246 / 0.12);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* Charts */
+  --chart-1: var(--primary);
+  --chart-2: var(--accent-cyan);
+  --chart-3: var(--success);
+  --chart-4: var(--warning);
+  --chart-5: var(--destructive);
+
+  --radius: 0.75rem;
+  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 8px 24px -12px rgb(0 0 0 / 0.5);
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  /* Typography: Poppins for interface text, Manrope for headings & metrics. */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-elevated: var(--elevated);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-solid: var(--primary-solid);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-destructive-solid: var(--destructive-solid);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-cyan: var(--accent-cyan);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+  --color-neutral: var(--neutral);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --shadow-card: var(--shadow-card);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight;
+  }
+}
+
+@layer utilities {
+  /* Numeric displays: Manrope with tabular figures so values don't jitter while polling. */
+  .metric {
+    font-family: var(--font-heading);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+}
