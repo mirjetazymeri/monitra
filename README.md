@@ -89,8 +89,9 @@ See [`docs/architecture.md`](docs/architecture.md) for design decisions and [`do
 
 Prerequisites (verified with): PHP 8.3, Composer 2.9, Node.js 22, npm 10, MySQL 8 and Git. Laragon provides all of them. If `php` is not on your PATH, use Laragon's terminal (Cmder), or add `C:\laragon\bin\php\php-8.3.x\` to PATH.
 
+Clone this repository with Git, using the HTTPS or SSH URL from the green **Code** button on its GitHub page, or with GitHub Desktop (**Code → Open with GitHub Desktop**). Clone it into Laragon's web root, for example `C:\laragon\www\monitra`, then open a terminal in the project folder:
+
 ```bash
-git clone <your-fork-url> monitra
 cd monitra
 ```
 

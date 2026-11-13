@@ -12,6 +12,11 @@ build/
 *.pem
 auth.json
 
+# Database dumps & backups
+*.sql
+*.sql.gz
+*.dump
+
 # Logs & caches
 *.log
 .phpunit.cache/
