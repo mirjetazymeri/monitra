@@ -242,7 +242,8 @@ export default function EndpointDetailPage({ params }: { params: Promise<{ id: s
         pending={action === "delete"}
         onCancel={() => setDeleting(false)}
         onConfirm={async (target) => {
-          if (await remove(target)) router.replace("/endpoints");
+          // Skip revalidating the deleted endpoint (it would flash a 404 state) and leave the page.
+          if (await remove(target, { skipOwnQueries: true })) router.replace("/endpoints");
         }}
       />
     </div>

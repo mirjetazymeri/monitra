@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSWRConfig } from "swr";
 import { toast } from "sonner";
 import { ApiError } from "@/lib/api/client";
 import { endpointsApi } from "@/lib/api/services";
@@ -18,6 +19,7 @@ function errorMessage(error: unknown, fallback: string): string {
  */
 export function useEndpointActions() {
   const refreshAll = useRefreshAll();
+  const { mutate } = useSWRConfig();
   const [busy, setBusy] = useState<Record<number, "check" | "toggle" | "delete" | undefined>>({});
 
   function track(id: number, action: "check" | "toggle" | "delete" | undefined) {
@@ -56,12 +58,20 @@ export function useEndpointActions() {
     }
   }
 
-  async function remove(endpoint: Endpoint): Promise<boolean> {
+  async function remove(endpoint: Endpoint, options: { skipOwnQueries?: boolean } = {}): Promise<boolean> {
     track(endpoint.id, "delete");
     try {
       await endpointsApi.remove(endpoint.id);
       toast.success(`${endpoint.name} deleted`, { description: "Its check history and incidents were removed." });
-      await refreshAll();
+      if (options.skipOwnQueries) {
+        // Refresh lists and dashboards, but not the deleted endpoint's own queries (they would 404).
+        const path = `/api/endpoints/${endpoint.id}`;
+        const own = (k: string) =>
+          k === path || k.startsWith(`${path}/`) || k.startsWith(`${path}?`) || new URLSearchParams(k.split("?")[1] ?? "").get("endpoint_id") === String(endpoint.id);
+        await mutate((k) => typeof k === "string" && k.startsWith("/api/") && k !== "/api/auth/user" && !own(k));
+      } else {
+        await refreshAll();
+      }
       return true;
     } catch (error) {
       toast.error(errorMessage(error, "Could not delete the endpoint."));
